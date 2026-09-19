@@ -4025,6 +4025,53 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8826500754875540951, guid: 37212a1b212ac6046889bb7482f9530e, type: 3}
   m_PrefabInstance: {fileID: 690112877}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &691796538
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 691796539}
+  - component: {fileID: 691796540}
+  m_Layer: 0
+  m_Name: FlowGoal
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &691796539
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 691796538}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 886382808}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &691796540
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 691796538}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e14f54a29640d74c8f39278db5a645e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FlowField
+  map: {fileID: 886382807}
+  target: {fileID: 858863706}
+  trackTarget: 0
 --- !u!1001 &694529578
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5233,6 +5280,7 @@ GameObject:
   m_Component:
   - component: {fileID: 886382808}
   - component: {fileID: 886382807}
+  - component: {fileID: 886382809}
   m_Layer: 0
   m_Name: GridMap
   m_TagString: Untagged
@@ -5269,8 +5317,27 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1612347715}
+  - {fileID: 2095724698}
+  - {fileID: 691796539}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &886382809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 886382806}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1660d637946939643a948488f99ccc31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StageSetup
+  map: {fileID: 886382807}
+  flows:
+  - {fileID: 2095724699}
+  - {fileID: 691796540}
+  tilesRoot: {fileID: 1612347715}
 --- !u!4 &913227290 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2563701636152131884, guid: ddfba6385364b2e45ab821126a98ceea, type: 3}
@@ -16656,6 +16723,53 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1442295191514245031, guid: 2118091e439abde4882e87f3efc11a1f, type: 3}
   m_PrefabInstance: {fileID: 1020169316}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2095724697
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2095724698}
+  - component: {fileID: 2095724699}
+  m_Layer: 0
+  m_Name: FlowPlayer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2095724698
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2095724697}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 886382808}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2095724699
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2095724697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e14f54a29640d74c8f39278db5a645e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FlowField
+  map: {fileID: 886382807}
+  target: {fileID: 313952523}
+  trackTarget: 1
 --- !u!1 &2096262795
 GameObject:
   m_ObjectHideFlags: 0
