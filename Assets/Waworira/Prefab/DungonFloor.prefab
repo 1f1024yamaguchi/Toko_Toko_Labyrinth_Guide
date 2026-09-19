@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &5698455446721705234
+--- !u!1 &433660803849139388
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,48 +8,48 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2563701636152131884}
-  - component: {fileID: 8992558206891086501}
-  - component: {fileID: 7213477127374860404}
-  - component: {fileID: -2232832689647378770}
-  - component: {fileID: -1683984808899437957}
+  - component: {fileID: 8600106259979232163}
+  - component: {fileID: 2588033281398706075}
+  - component: {fileID: 1041298044397892763}
+  - component: {fileID: 2192247907838131674}
+  - component: {fileID: 8887568102113877508}
   m_Layer: 0
-  m_Name: Spring09
+  m_Name: DungonFloor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2563701636152131884
+--- !u!4 &8600106259979232163
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5698455446721705234}
+  m_GameObject: {fileID: 433660803849139388}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.66, y: 0.51, z: -3.76}
-  m_LocalScale: {x: 0.23986, y: 0.23986, z: 0.23986}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &8992558206891086501
+--- !u!33 &2588033281398706075
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5698455446721705234}
-  m_Mesh: {fileID: -3426854238020468266, guid: c045d1399cf47e94396c3fb9f7040cb8, type: 3}
---- !u!23 &7213477127374860404
+  m_GameObject: {fileID: 433660803849139388}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &1041298044397892763
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5698455446721705234}
+  m_GameObject: {fileID: 433660803849139388}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -68,7 +68,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -57168552755182918, guid: c045d1399cf47e94396c3fb9f7040cb8, type: 3}
+  - {fileID: 2100000, guid: 8caac294f6026bd4f9c6bcc37b2afcda, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -92,26 +92,13 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &-2232832689647378770
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5698455446721705234}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 08865950c35338a4ea016bd3e10ae6ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::StageTile
-  type: 1
---- !u!65 &-1683984808899437957
+--- !u!65 &2192247907838131674
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5698455446721705234}
+  m_GameObject: {fileID: 433660803849139388}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -124,5 +111,18 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 4.5437036, y: 10.001274, z: 4.854683}
-  m_Center: {x: -0.5802917, y: 5.0016556, z: -0.025022984}
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8887568102113877508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 433660803849139388}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08865950c35338a4ea016bd3e10ae6ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StageTile
+  type: 0
