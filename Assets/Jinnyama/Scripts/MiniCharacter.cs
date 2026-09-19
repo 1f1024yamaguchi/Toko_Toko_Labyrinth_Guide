@@ -186,6 +186,7 @@ public class MiniCharacter : MonoBehaviour
         move = Move.Idle;
         SetFollowFx(false);
         OnResolved?.Invoke(this);
+        Destroy(gameObject); 
     }
 
     void SetFollowFx(bool on)

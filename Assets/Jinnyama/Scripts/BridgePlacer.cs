@@ -14,6 +14,11 @@ public class BridgePlacer : MonoBehaviour
     [SerializeField] Transform player;            // 実際のプレイヤーオブジェクトの参照
     [SerializeField] int placeableRadius = 1;     // 橋を置ける周囲の距離（1なら周囲8マス）
 
+    [Header("サウンド")]
+    [SerializeField] AudioSource audioSource;
+    [SerializeField] AudioClip placeSE;
+    [SerializeField] AudioClip removeSE;
+
     readonly Dictionary<Vector2Int, GameObject> placed = new();
 
     void Start()
@@ -62,6 +67,7 @@ public class BridgePlacer : MonoBehaviour
         stock--;
         map.SetBridge(c, true);    // 見た目を置いてからデータを更新する
         UpdateStockText();
+        if (audioSource != null && placeSE != null) audioSource.PlayOneShot(placeSE);
     }
 
     void TryRemove(Vector2Int c)   // 撤去して本数を回収する
@@ -72,5 +78,6 @@ public class BridgePlacer : MonoBehaviour
         stock++;
         map.SetBridge(c, false);
         UpdateStockText();
+        if (audioSource != null && removeSE != null) audioSource.PlayOneShot(removeSE);
     }
 }
