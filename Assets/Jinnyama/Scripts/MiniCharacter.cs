@@ -22,11 +22,22 @@ public class MiniCharacter : MonoBehaviour
     [SerializeField] float fallLimit = 2f;           // 開始位置よりこれだけ落ちたら落下扱い
     [SerializeField] string playerTag = "Player";
 
+    [Header("ぶつからないようにする")]
+    [Tooltip("マス1個分を1.0とした距離。ほかのミニキャラがこれより近いと離れる")]
+    [SerializeField] float separationRadius = 0.8f;
+    [Tooltip("マス1個分を1.0とした距離。プレイヤーがこれより近いと離れる")]
+    [SerializeField] float playerSeparationRadius = 0.8f;
+    [Tooltip("離れるときの速さ")]
+    [SerializeField] float separationSpeed = 1.5f;
+    [Tooltip("ミニキャラ同士は押し合わずにすり抜ける（詰まって動けなくなるのを防ぐ）")]
+    [SerializeField] bool passThroughOtherMinis = true;
+
     [Header("見た目")]
     [SerializeField] ParticleSystem followFx;
     [SerializeField] ParticleSystem joinFx;
 
     Rigidbody rb;
+    Transform player;
     Team team = Team.Wild;
     Move move = Move.Idle;
     Vector2Int cell, target;
@@ -49,6 +60,11 @@ public class MiniCharacter : MonoBehaviour
         Vector3 p = map.CellToWorld(cell);
         p.y = startY;
         transform.position = p;
+
+        var playerObj = GameObject.FindGameObjectWithTag(playerTag);
+        if (playerObj != null) player = playerObj.transform;
+
+        SetupPassThrough();
 
         playerFlow.OnUpdated += OnFlowUpdated;
         goalFlow.OnUpdated += OnFlowUpdated;
@@ -114,9 +130,13 @@ public class MiniCharacter : MonoBehaviour
         // 穴などに落ちたとき
         if (transform.position.y < startY - fallLimit) { Fall(); return; }
 
+        Vector3 sep = SeparationVelocity();   // 近すぎる相手から離れる分
+
         if (move != Move.Moving)
         {
-            StopHorizontal();
+                        // 止まっているときでも、近すぎるなら退いて場所をあける
+            rb.linearVelocity = new Vector3(sep.x, rb.linearVelocity.y, sep.z);
+            SyncCell();
             return;
         }
 
@@ -135,9 +155,110 @@ public class MiniCharacter : MonoBehaviour
 
         Vector3 dir = d / dist;
         float step = Mathf.Min(speed, dist / Time.fixedDeltaTime);   // 行き過ぎ防止
-        rb.linearVelocity = new Vector3(dir.x * step, rb.linearVelocity.y, dir.z * step);
+        Vector3 v = dir * step + sep;
+        rb.linearVelocity = new Vector3(v.x, rb.linearVelocity.y, v.z);
         transform.forward = dir;
     }
+
+    // ---------- お互いに距離をとる ----------
+
+    // 近すぎる相手（ほかのミニキャラ・プレイヤー）から離れる速度を作る
+    Vector3 SeparationVelocity()
+    {
+        if (separationSpeed <= 0f) return Vector3.zero;
+
+        Vector3 away = Vector3.zero;
+
+        for (int i = 0; i < All.Count; i++)
+        {
+            var other = All[i];
+            if (other == null || other == this || other.IsResolved) continue;
+            away += AwayFrom(other.transform.position, separationRadius);
+        }
+
+                // 仲間になったミニキャラだけプレイヤーから離れる
+        // ・Wild / Stopped は触って仲間にしたいので逃げない
+        // ・プレイヤーがゴールして非表示になったあとは、その場に Transform だけ残る。
+        //   それから逃げるとゴールのマスに入れなくなるので、非表示のときは無視する
+        if (player != null && player.gameObject.activeInHierarchy && team == Team.Follow)
+            away += AwayFrom(player.position, playerSeparationRadius);
+
+        if (away.sqrMagnitude < 0.000001f) return Vector3.zero;
+
+        return AllowedMove(Vector3.ClampMagnitude(away, 1f) * separationSpeed);
+    }
+
+    // 相手から離れる向き。近いほど強くなる
+    Vector3 AwayFrom(Vector3 otherPos, float radiusInCells)
+    {
+        float radius = radiusInCells * map.cellSize;
+        if (radius <= 0f) return Vector3.zero;
+
+        Vector3 d = transform.position - otherPos;
+        d.y = 0f;
+        float dist = d.magnitude;
+        if (dist >= radius) return Vector3.zero;
+
+        if (dist < 0.001f)   // ほぼ重なっている → 個体ごとに決まった向きへ逃がす
+        {
+            float a = (Mathf.Abs(GetInstanceID()) % 360) * Mathf.Deg2Rad;
+            return new Vector3(Mathf.Cos(a), 0f, Mathf.Sin(a));
+        }
+
+        return d / dist * (1f - dist / radius);
+    }
+
+    // 穴・とげ・壁のほうへは押し出さない
+    Vector3 AllowedMove(Vector3 v)
+    {
+        if (v.sqrMagnitude < 0.000001f) return Vector3.zero;
+
+        float look = Time.fixedDeltaTime * 4f;   // 少し先を見て確かめる
+        if (map.IsWalkable(map.WorldToCell(transform.position + v * look))) return v;
+
+        Vector3 vx = new Vector3(v.x, 0f, 0f);
+        if (map.IsWalkable(map.WorldToCell(transform.position + vx * look))) return vx;
+
+        Vector3 vz = new Vector3(0f, 0f, v.z);
+        if (map.IsWalkable(map.WorldToCell(transform.position + vz * look))) return vz;
+
+        return Vector3.zero;
+    }
+
+    // 押されて別のマスに移ったときは、今いるマスを取り直して行き先を考え直す
+    void SyncCell()
+    {
+        Vector2Int c = map.WorldToCell(transform.position);
+        if (c == cell || !map.IsWalkable(c)) return;
+
+        cell = c;
+        if (team == Team.Follow || team == Team.ToGoal) DecideNext();
+    }
+
+    // ミニキャラ同士の当たり判定を切る（押し合いで進行不能にならないように）
+    void SetupPassThrough()
+    {
+        if (!passThroughOtherMinis) return;
+
+        var mine = GetComponentsInChildren<Collider>();
+
+        for (int i = 0; i < All.Count; i++)
+        {
+            var other = All[i];
+            if (other == null || other == this) continue;
+
+            foreach (var oc in other.GetComponentsInChildren<Collider>())
+            {
+                if (oc == null) continue;
+                foreach (var mc in mine)
+                {
+                    if (mc == null) continue;
+                    Physics.IgnoreCollision(mc, oc, true);
+                }
+            }
+        }
+    }
+
 
     void StopHorizontal() =>
         rb.linearVelocity = new Vector3(0f, rb.linearVelocity.y, 0f);
