@@ -34,17 +34,29 @@ public class BridgePlacer : MonoBehaviour
     void Update()
     {
         var mouse = Mouse.current;
-        if (mouse == null) return;   // マウスがつながっていないとき
+        if (mouse == null) { Debug.Log("[BridgePlacer] Mouse.current が null"); return; }
 
-        if (mouse.leftButton.wasPressedThisFrame)  TryPlace(GetCell(mouse));
-        if (mouse.rightButton.wasPressedThisFrame) TryRemove(GetCell(mouse));
+        if (mouse.leftButton.wasPressedThisFrame)
+        {
+            Debug.Log("[BridgePlacer] 左クリック検出");
+            TryPlace(GetCell(mouse));
+        }
+        if (mouse.rightButton.wasPressedThisFrame)
+        {
+            Debug.Log("[BridgePlacer] 右クリック検出");
+            TryRemove(GetCell(mouse));
+        }
     }
 
     Vector2Int GetCell(Mouse mouse)
     {
+        if (cam == null) { Debug.LogError("[BridgePlacer] cam が null!"); return Vector2Int.zero; }
+        if (map == null) { Debug.LogError("[BridgePlacer] map が null!"); return Vector2Int.zero; }
         var ray = cam.ScreenPointToRay(mouse.position.ReadValue());
         new Plane(Vector3.up, Vector3.zero).Raycast(ray, out float enter);
-        return map.WorldToCell(ray.GetPoint(enter));
+        Vector2Int c = map.WorldToCell(ray.GetPoint(enter));
+        Debug.Log($"[BridgePlacer] クリック位置 → セル {c}");
+        return c;
     }
 
     bool IsNearPlayer(Vector2Int c)
@@ -61,11 +73,14 @@ public class BridgePlacer : MonoBehaviour
 
     void TryPlace(Vector2Int c)
     {
-        // 橋が置けない条件、またはプレイヤーから離れすぎている場合は置かない
-        if (stock <= 0 || !map.CanPlaceBridge(c) || !IsNearPlayer(c)) return;
+        if (stock <= 0)           { Debug.Log($"[BridgePlacer] 在庫切れ (stock={stock})"); return; }
+        if (!map.CanPlaceBridge(c)) { Debug.Log($"[BridgePlacer] CanPlaceBridge({c}) = false（穴マスでない等）"); return; }
+        if (!IsNearPlayer(c))     { Debug.Log($"[BridgePlacer] プレイヤーから遠すぎる ({c})"); return; }
+
+        Debug.Log($"[BridgePlacer] 橋を設置: {c}");
         placed[c] = Instantiate(bridgePrefab, map.CellToWorld(c), Quaternion.identity);
         stock--;
-        map.SetBridge(c, true);    // 見た目を置いてからデータを更新する
+        map.SetBridge(c, true);
         UpdateStockText();
         if (audioSource != null && placeSE != null) audioSource.PlayOneShot(placeSE);
     }

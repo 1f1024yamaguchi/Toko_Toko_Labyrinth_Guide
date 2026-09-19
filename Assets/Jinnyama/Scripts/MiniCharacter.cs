@@ -96,7 +96,12 @@ public class MiniCharacter : MonoBehaviour
 
     public void Go()
     {
-        if (team == Team.Stopped) { team = Team.Follow; SetFollowFx(true); }
+        if (team == Team.Stopped) 
+        { 
+            team = Team.Follow; 
+            SetFollowFx(true); 
+        }
+
         if (team != Team.Follow) return;
         if (move != Move.Moving) DecideNext();
     }
@@ -313,7 +318,13 @@ public class MiniCharacter : MonoBehaviour
     void SetFollowFx(bool on)
     {
         if (followFx == null) return;
-        if (on && !followFx.isPlaying) followFx.Play();
-        else if (!on) followFx.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+        if (on) 
+        {
+            followFx.Play();
+        }
+        else
+        {
+            followFx.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+        }
     }
 }
