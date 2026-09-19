@@ -8,6 +8,15 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Waworira/Sceans/Map1.unity
+    guid: 467ad2ad1ed9c414abbb6cdc1d37d2bd
+  - enabled: 1
+    path: Assets/Waworira/Sceans/Map2.unity
+    guid: b28a12a288c24054f916035bf188c3c8
+  - enabled: 1
+    path: Assets/Waworira/Sceans/Start.unity
+    guid: 8a2daa4958d58d64190af7e04e99e32c
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
