@@ -17,6 +17,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Waworira/Sceans/Start.unity
     guid: 8a2daa4958d58d64190af7e04e99e32c
+  - enabled: 1
+    path: Assets/Jinnyama/child_move_test.unity
+    guid: eeaaaa7f443850341acedad3bbf3199f
+  - enabled: 1
+    path: Assets/Jinnyama/child_move_test_stage2.unity
+    guid: 89a13e331371a824b9fdcf9952745501
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
