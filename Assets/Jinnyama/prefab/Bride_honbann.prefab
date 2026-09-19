@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8469174452746616512}
   - component: {fileID: 1494389110360506083}
   m_Layer: 0
-  m_Name: Bride
+  m_Name: Bride_honbann
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
