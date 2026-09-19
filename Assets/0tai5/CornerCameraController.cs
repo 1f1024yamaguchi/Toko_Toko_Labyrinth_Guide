@@ -5,6 +5,7 @@ namespace Otai5
 {
     /// <summary>
     /// Q/Eキーでステージの「角（45度斜め）」から90度ずつ4方向に滑らかに回転する見下ろしカメラコントローラー
+    /// （SE再生機能付き）
     /// </summary>
     public class CornerCameraController : MonoBehaviour
     {
@@ -26,9 +27,33 @@ namespace Otai5
         [Tooltip("回転の滑らかさ（大きいほど速く回転）")]
         [SerializeField] private float rotationSpeed = 8f;
 
+        [Header("Audio Settings (SE)")]
+        [Tooltip("カメラ回転時に鳴らす効果音(SE)")]
+        [SerializeField] private AudioClip rotateSound;
+
+        [Tooltip("SEを鳴らすAudioSource（未設定なら自動で取得・追加されます）")]
+        [SerializeField] private AudioSource audioSource;
+
+        [Tooltip("SEの音量")]
+        [Range(0f, 1f)]
+        [SerializeField] private float soundVolume = 0.8f;
+
         // 45度、135度、225度、315度（角からの4方向視点）
         private int currentAngleIndex = 0; 
         private float targetYAngle = 45f;
+
+        private void Awake()
+        {
+            // AudioSource が未設定の場合は自動で取得または追加
+            if (audioSource == null)
+            {
+                audioSource = GetComponent<AudioSource>();
+                if (audioSource == null)
+                {
+                    audioSource = gameObject.AddComponent<AudioSource>();
+                }
+            }
+        }
 
         private void Update()
         {
@@ -78,6 +103,20 @@ namespace Otai5
             
             // 45度ベースで90度ずつ加算（45°, 135°, 225°, 315°）
             targetYAngle = 45f + (currentAngleIndex * 90f);
+
+            // SEを再生
+            PlayRotateSound();
+        }
+
+        /// <summary>
+        /// カメラ回転SEを鳴らす
+        /// </summary>
+        private void PlayRotateSound()
+        {
+            if (audioSource != null && rotateSound != null)
+            {
+                audioSource.PlayOneShot(rotateSound, soundVolume);
+            }
         }
     }
 }
