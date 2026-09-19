@@ -3,7 +3,7 @@ using UnityEngine;
 public class StageSetup : MonoBehaviour
 {
     [SerializeField] GridMap map;
-    [SerializeField] FlowField flow;
+    [SerializeField] FlowField[] flows;   // プレイヤー用とゴール用の両方を入れる
     [SerializeField] Transform tilesRoot;
 
     void Start()
@@ -23,6 +23,8 @@ public class StageSetup : MonoBehaviour
             Vector2Int c = map.WorldToCell(tile.transform.position);
             if (map.InBounds(c)) map.SetTile(c, tile.type);
         }
-        flow.Rebuild();
+
+        foreach (var f in flows)
+            if (f != null) f.Rebuild();
     }
 }
