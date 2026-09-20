@@ -14,6 +14,10 @@ public class BridgePlacer : MonoBehaviour
     [SerializeField] Transform player;            // 実際のプレイヤーオブジェクトの参照
     [SerializeField] int placeableRadius = 1;     // 橋を置ける周囲の距離（1なら周囲8マス）
 
+    [Header("橋の高さ")]
+    [Tooltip("GridMap.floorY からの相対オフセット。プレハブのpivotが板の中心なので、板厚の半分だけ上げると下端が床と揃う")]
+    [SerializeField] float bridgeYOffset =0f;
+
     [Header("サウンド")]
     [SerializeField] AudioSource audioSource;
     [SerializeField] AudioClip placeSE;
@@ -53,7 +57,15 @@ public class BridgePlacer : MonoBehaviour
         if (cam == null) { Debug.LogError("[BridgePlacer] cam が null!"); return Vector2Int.zero; }
         if (map == null) { Debug.LogError("[BridgePlacer] map が null!"); return Vector2Int.zero; }
         var ray = cam.ScreenPointToRay(mouse.position.ReadValue());
-        new Plane(Vector3.up, Vector3.zero).Raycast(ray, out float enter);
+
+        var plane = new Plane(Vector3.up, new Vector3(0f, map.floorY, 0f));
+
+        if(!plane.Raycast(ray, out float enter))
+        {
+            Debug.Log("[BridgePlacer]床平面と交差しませんでした");
+            return new Vector2Int(int.MinValue, int.MinValue); // 必ず InBounds=false になる値
+        }
+
         Vector2Int c = map.WorldToCell(ray.GetPoint(enter));
         Debug.Log($"[BridgePlacer] クリック位置 → セル {c}");
         return c;
@@ -78,7 +90,8 @@ public class BridgePlacer : MonoBehaviour
         if (!IsNearPlayer(c))     { Debug.Log($"[BridgePlacer] プレイヤーから遠すぎる ({c})"); return; }
 
         Debug.Log($"[BridgePlacer] 橋を設置: {c}");
-        placed[c] = Instantiate(bridgePrefab, map.CellToWorld(c), Quaternion.identity);
+        Vector3 pos = map.CellToWorld(c) + Vector3.up * bridgeYOffset;
+        placed[c] = Instantiate(bridgePrefab, pos, Quaternion.identity);
         stock--;
         map.SetBridge(c, true);
         UpdateStockText();

@@ -5,8 +5,14 @@ public enum TileType { Floor, Wall, Hole, Spike, Goal }
 
 public class GridMap : MonoBehaviour
 {
+    [Header("グリッド")]
     public int width = 10, height = 10;
     public float cellSize = 1f;
+
+    [Header("高さ")]
+    [Tooltip("床のY座標。橋の生成の高さとクリック判定の平面に使われる")]
+    public float floorY = 0f;
+
     TileType[,] tiles;   // Tilemapやシーン上の配置から初期化する
     bool[,] bridged;
 
@@ -47,7 +53,7 @@ public class GridMap : MonoBehaviour
 
     public void SetTile(Vector2Int c, TileType t) => tiles[c.x, c.y] = t;
 
-    public Vector3 CellToWorld(Vector2Int c) => new Vector3(c.x * cellSize, 0, c.y * cellSize);
+    public Vector3 CellToWorld(Vector2Int c) => new Vector3(c.x * cellSize, floorY, c.y * cellSize);
     public Vector2Int WorldToCell(Vector3 p) =>
         new Vector2Int(Mathf.RoundToInt(p.x / cellSize), Mathf.RoundToInt(p.z / cellSize));
 }

@@ -5303,6 +5303,7 @@ MonoBehaviour:
   width: 10
   height: 10
   cellSize: 1
+  floorY: 0
 --- !u!4 &886382808
 Transform:
   m_ObjectHideFlags: 0
@@ -8377,6 +8378,7 @@ MonoBehaviour:
   stockText: {fileID: 187882552}
   player: {fileID: 313952523}
   placeableRadius: 1
+  bridgeYOffset: 0
   audioSource: {fileID: 764906165}
   placeSE: {fileID: 8300000, guid: 5e4c1bb3a8c873144945d9e81dab4112, type: 3}
   removeSE: {fileID: 8300000, guid: 5e4c1bb3a8c873144945d9e81dab4112, type: 3}
