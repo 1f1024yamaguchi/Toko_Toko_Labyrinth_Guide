@@ -23,6 +23,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Jinnyama/child_move_test_stage2.unity
     guid: 89a13e331371a824b9fdcf9952745501
+  - enabled: 1
+    path: Assets/shiori/Scenes/StartScene.unity
+    guid: 2191663d56c63534ebd958a5566d9680
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
