@@ -5,6 +5,9 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class MiniCharacter : MonoBehaviour
 {
+    [SerializeField] Animator animator;
+    static readonly int SpeedHash = Animator.StringToHash("Speed");
+
     public enum Team { Wild, Follow, Stopped, ToGoal, Goaled, Lost }
     enum Move { Idle, Moving, Waiting }
 
@@ -51,7 +54,14 @@ public class MiniCharacter : MonoBehaviour
     void OnEnable()  => All.Add(this);
     void OnDisable() => All.Remove(this);
 
-    void Awake() => rb = GetComponent<Rigidbody>();
+    void Awake()
+    {
+        rb = GetComponent<Rigidbody>();
+        if (animator == null)
+        {
+            animator = GetComponentInChildren<Animator>();
+        }
+    } 
 
     void Start()
     {
@@ -69,6 +79,14 @@ public class MiniCharacter : MonoBehaviour
         playerFlow.OnUpdated += OnFlowUpdated;
         goalFlow.OnUpdated += OnFlowUpdated;
         SetFollowFx(false);
+    }
+
+    void Update()
+    {
+        if (animator == null) return; 
+        Vector3  v = rb.linearVelocity;
+        v.y =0f;
+        animator.SetFloat(SpeedHash, v.magnitude);
     }
 
     void OnDestroy()
@@ -112,6 +130,7 @@ public class MiniCharacter : MonoBehaviour
         team = Team.Stopped;
         SetFollowFx(false);
         if (move != Move.Moving) move = Move.Idle;
+        
     }
 
     // ---------- プレイヤーがゴールしたとき ----------
@@ -142,6 +161,7 @@ public class MiniCharacter : MonoBehaviour
                         // 止まっているときでも、近すぎるなら退いて場所をあける
             rb.linearVelocity = new Vector3(sep.x, rb.linearVelocity.y, sep.z);
             SyncCell();
+           
             return;
         }
 
@@ -163,6 +183,7 @@ public class MiniCharacter : MonoBehaviour
         Vector3 v = dir * step + sep;
         rb.linearVelocity = new Vector3(v.x, rb.linearVelocity.y, v.z);
         transform.forward = dir;
+       
     }
 
     // ---------- お互いに距離をとる ----------
