@@ -18,6 +18,7 @@ public class Destroyscript : MonoBehaviour
         if (collision.gameObject.CompareTag("Toge"))
         {
             Destroy(gameObject);
+            
         }
     }
 }
