@@ -21,5 +21,6 @@ public class Next_Stage : MonoBehaviour
    public void ChangeScene()
     {
         SceneManager.LoadScene(LoadtoScene.name);
+        Time.timeScale=1f;
     }
 }
