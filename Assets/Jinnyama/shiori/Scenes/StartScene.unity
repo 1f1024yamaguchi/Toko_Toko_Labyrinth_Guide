@@ -480,6 +480,7 @@ GameObject:
   - component: {fileID: 1098130246}
   - component: {fileID: 1098130245}
   - component: {fileID: 1098130244}
+  - component: {fileID: 1098130247}
   m_Layer: 5
   m_Name: StartButton
   m_TagString: Untagged
@@ -551,10 +552,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1157103010}
-        m_TargetAssemblyTypeName: StartButton, Assembly-CSharp
+      - m_Target: {fileID: 1098130247}
+        m_TargetAssemblyTypeName: Next_Stage, Assembly-CSharp
         m_MethodName: ChangeScene
-        m_Mode: 5
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -601,6 +602,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1098130242}
   m_CullTransparentMesh: 1
+--- !u!114 &1098130247
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1098130242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa8af8144549cad4fbb3f8c85f99db3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Next_Stage
+  LoadtoScene: {fileID: 102900000, guid: eeaaaa7f443850341acedad3bbf3199f, type: 3}
 --- !u!1 &1157103009
 GameObject:
   m_ObjectHideFlags: 0
@@ -899,7 +913,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.CanvasScaler
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}

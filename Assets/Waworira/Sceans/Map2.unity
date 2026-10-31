@@ -516,11 +516,13 @@ MonoBehaviour:
   cam: {fileID: 1233537766}
   stockText: {fileID: 407568626}
   player: {fileID: 1570696300}
-  placeableRadius: 1
-  bridgeYOffset: 2
+  placeableRadius: 0
+  bridgeYOffset: 0
   audioSource: {fileID: 1601187303}
   placeSE: {fileID: 8300000, guid: 5e4c1bb3a8c873144945d9e81dab4112, type: 3}
   removeSE: {fileID: 8300000, guid: 5e4c1bb3a8c873144945d9e81dab4112, type: 3}
+  nearMargin: 1
+  snapDistance: 0.8
 --- !u!114 &37728557
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3531,6 +3533,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: DungeonTrap (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 5382160943257937911, guid: faa3e3bfccd4f194ba5792853f474f73, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7546173329441766164, guid: faa3e3bfccd4f194ba5792853f474f73, type: 3}
       propertyPath: m_LocalPosition.x
       value: 6
@@ -6149,6 +6155,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1033258282}
   - component: {fileID: 1033258281}
+  - component: {fileID: 1033258283}
   m_Layer: 0
   m_Name: GridMap
   m_TagString: Untagged
@@ -6168,10 +6175,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b051fbb55d27a0346b18f083e7bb4606, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GridMap
-  width: 10
-  height: 10
+  width: 13
+  height: 11
   cellSize: 1
-  floorY: 0
+  floorY: 0.5
 --- !u!4 &1033258282
 Transform:
   m_ObjectHideFlags: 0
@@ -6193,6 +6200,23 @@ Transform:
   - {fileID: 572395849}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1033258283
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1033258280}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1660d637946939643a948488f99ccc31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StageSetup
+  map: {fileID: 1033258281}
+  flows:
+  - {fileID: 675038466}
+  - {fileID: 1100724959}
+  tilesRoot: {fileID: 0}
 --- !u!1 &1048768704 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7238525472641789637, guid: 6d486dfc6e2ad2748b67653609f16f88, type: 3}
@@ -13559,6 +13583,10 @@ PrefabInstance:
     - target: {fileID: 5382160943257937911, guid: faa3e3bfccd4f194ba5792853f474f73, type: 3}
       propertyPath: m_Name
       value: DungeonTrap
+      objectReference: {fileID: 0}
+    - target: {fileID: 5382160943257937911, guid: faa3e3bfccd4f194ba5792853f474f73, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5382160943257937911, guid: faa3e3bfccd4f194ba5792853f474f73, type: 3}
       propertyPath: m_TagString

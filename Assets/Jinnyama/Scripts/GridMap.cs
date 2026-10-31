@@ -51,7 +51,10 @@ public class GridMap : MonoBehaviour
         OnChanged?.Invoke();   // ← ここで経路の再計算が走る
     }
 
-    public void SetTile(Vector2Int c, TileType t) => tiles[c.x, c.y] = t;
+    public TileType GetTile(Vector2Int c) => tiles[c.x, c.y];
+
+    
+public void SetTile(Vector2Int c, TileType t) => tiles[c.x, c.y] = t;
 
     public Vector3 CellToWorld(Vector2Int c) => new Vector3(c.x * cellSize, floorY, c.y * cellSize);
     public Vector2Int WorldToCell(Vector3 p) =>

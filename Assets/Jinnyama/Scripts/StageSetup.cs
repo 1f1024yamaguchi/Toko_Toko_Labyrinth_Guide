@@ -21,7 +21,10 @@ public class StageSetup : MonoBehaviour
         foreach (var tile in tiles)
         {
             Vector2Int c = map.WorldToCell(tile.transform.position);
-            if (map.InBounds(c)) map.SetTile(c, tile.type);
+            if (!map.InBounds(c)) continue;
+            // 同じマスに床と壁などが重なっている場合、床で上書きしない
+            if (tile.type == TileType.Floor && map.GetTile(c) != TileType.Hole) continue;
+            map.SetTile(c, tile.type);
         }
 
         foreach (var f in flows)

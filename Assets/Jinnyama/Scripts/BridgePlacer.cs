@@ -25,6 +25,15 @@ public class BridgePlacer : MonoBehaviour
 
     readonly Dictionary<Vector2Int, GameObject> placed = new();
 
+    [Header("クリック判定のゆるさ")]
+    [Tooltip("プレイヤーとの距離判定の余裕（マス単位）")]
+    [SerializeField] float nearMargin = 0.4f;
+    [Tooltip("クリック位置からこの距離（マス単位）以内に置ける穴があれば、そちらに吸着する")]
+    [SerializeField] float snapDistance = 0.8f;
+
+    Vector3 lastClickPoint;
+
+
     void Start()
     {
         UpdateStockText();
@@ -43,7 +52,7 @@ public class BridgePlacer : MonoBehaviour
         if (mouse.leftButton.wasPressedThisFrame)
         {
             Debug.Log("[BridgePlacer] 左クリック検出");
-            TryPlace(GetCell(mouse));
+            TryPlace(PickPlaceableCell(mouse));
         }
         if (mouse.rightButton.wasPressedThisFrame)
         {
@@ -66,28 +75,57 @@ public class BridgePlacer : MonoBehaviour
             return new Vector2Int(int.MinValue, int.MinValue); // 必ず InBounds=false になる値
         }
 
-        Vector2Int c = map.WorldToCell(ray.GetPoint(enter));
+        lastClickPoint = ray.GetPoint(enter);
+        Vector2Int c = map.WorldToCell(lastClickPoint);
         Debug.Log($"[BridgePlacer] クリック位置 → セル {c}");
         return c;
     }
 
+    // クリックしたマスに置けない場合、近くの「置ける穴」に吸着させる
+    Vector2Int PickPlaceableCell(Mouse mouse)
+    {
+        Vector2Int c = GetCell(mouse);
+        if (c.x == int.MinValue) return c;
+        if (map.CanPlaceBridge(c) && IsNearPlayer(c)) return c;
+
+        Vector2Int best = c;
+        float bestDist = float.MaxValue;
+        for (int dx = -1; dx <= 1; dx++)
+        for (int dy = -1; dy <= 1; dy++)
+        {
+            var n = new Vector2Int(c.x + dx, c.y + dy);
+            if (!map.CanPlaceBridge(n) || !IsNearPlayer(n)) continue;
+            Vector3 w = map.CellToWorld(n);
+            float d = Mathf.Max(Mathf.Abs(w.x - lastClickPoint.x), Mathf.Abs(w.z - lastClickPoint.z)) / map.cellSize;
+            if (d < bestDist) { bestDist = d; best = n; }
+        }
+        if (bestDist <= snapDistance)
+        {
+            Debug.Log($"[BridgePlacer] {c} には置けないので近くの穴 {best} に吸着");
+            return best;
+        }
+        return c;
+    }
+
+
     bool IsNearPlayer(Vector2Int c)
     {
         if (player == null) return true; // プレイヤーが未設定なら制限なし
-        
-        // プレイヤーのTransform座標から現在のグリッド上のマスを計算
-        Vector2Int pCell = map.WorldToCell(player.position);
-        
-        // プレイヤーの現在位置とクリックした位置の差が、縦横ともに設定した範囲内か判定
-        return Mathf.Abs(c.x - pCell.x) <= placeableRadius && 
-               Mathf.Abs(c.y - pCell.y) <= placeableRadius;
+
+        // プレイヤーは自由移動なので、マスに丸めず実座標で判定する
+        // （マスの端に立っていても隣の穴に置けるよう、プレイヤーの半径分だけ余裕を持たせる）
+        Vector3 cw = map.CellToWorld(c);
+        float dx = Mathf.Abs(player.position.x - cw.x) / map.cellSize;
+        float dz = Mathf.Abs(player.position.z - cw.z) / map.cellSize;
+        float limit = placeableRadius + 0.5f + nearMargin;
+        return dx <= limit && dz <= limit;
     }
 
     void TryPlace(Vector2Int c)
     {
         if (stock <= 0)           { Debug.Log($"[BridgePlacer] 在庫切れ (stock={stock})"); return; }
         if (!map.CanPlaceBridge(c)) { Debug.Log($"[BridgePlacer] CanPlaceBridge({c}) = false（穴マスでない等）"); return; }
-        if (!IsNearPlayer(c))     { Debug.Log($"[BridgePlacer] プレイヤーから遠すぎる ({c})"); return; }
+        if (!IsNearPlayer(c))     { Debug.Log($"[BridgePlacer] プレイヤーから遠すぎる ({c}) プレイヤー位置={player.position}"); return; }
 
         Debug.Log($"[BridgePlacer] 橋を設置: {c}");
         Vector3 pos = map.CellToWorld(c) + Vector3.up * bridgeYOffset;

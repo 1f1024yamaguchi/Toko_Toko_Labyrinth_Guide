@@ -3527,6 +3527,7 @@ GameObject:
   - component: {fileID: 382840591}
   - component: {fileID: 382840590}
   - component: {fileID: 382840589}
+  - component: {fileID: 382840592}
   m_Layer: 5
   m_Name: Next_Button
   m_TagString: Untagged
@@ -3597,7 +3598,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 382840590}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 382840592}
+        m_TargetAssemblyTypeName: Next_Stage, Assembly-CSharp
+        m_MethodName: ChangeScene
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &382840590
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3636,6 +3649,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 382840587}
   m_CullTransparentMesh: 1
+--- !u!114 &382840592
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 382840587}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa8af8144549cad4fbb3f8c85f99db3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Next_Stage
+  LoadtoScene: {fileID: 102900000, guid: 18471c807f1cdf1469b158824f40a98e, type: 3}
 --- !u!1 &385541683
 GameObject:
   m_ObjectHideFlags: 0
